@@ -1,0 +1,53 @@
+name: oauth2-proxy
+base: bare
+build-base: ubuntu@22.04
+version: "7.8.1"
+summary: OAuth2 Proxy
+description: |
+  OAuth2 Proxy is a reverse proxy and static file server that authenticates users
+  through providers like Google and GitHub, allowing validation by email, domain, or group.
+license: Apache-2.0
+run-user: _daemon_
+platforms:
+  amd64:
+
+services:
+  oauth2-proxy:
+    override: replace
+    command: /bin/oauth2-proxy --config /etc/config/oauth2-proxy/oauth2-proxy.cfg
+    startup: enabled
+
+parts:
+  config:
+    plugin: dump
+    source: ./config
+    source-type: local
+    organize:
+      oauth2-proxy.cfg: etc/config/oauth2-proxy/
+    stage:
+      - etc/config/oauth2-proxy/oauth2-proxy.cfg
+
+  certificates:
+    plugin: nil
+    stage-packages:
+      - ca-certificates
+
+  oauth2-proxy:
+    plugin: go
+    build-snaps:
+      - go/1.23/stable
+    build-environment:
+      - CGO_ENABLED: "0"
+    override-build: |
+      go mod download
+      go build -ldflags="-X github.com/oauth2-proxy/oauth2-proxy/v7/pkg/version.VERSION=$(git -C "${CRAFT_PART_SRC}" describe --tags)" -o ${CRAFT_PART_INSTALL}/bin/oauth2-proxy
+    source: https://github.com/oauth2-proxy/oauth2-proxy
+    source-type: git
+    source-tag: v7.8.1
+
+  deb-security-manifest:
+    plugin: nil
+    override-prime: |
+      set -x
+      mkdir -p $CRAFT_PRIME/usr/share/rocks/
+      (echo "# os-release" && cat /etc/os-release && echo "# dpkg-query" && dpkg-query --admindir=$CRAFT_PRIME/var/lib/dpkg/ -f '${db:Status-Abbrev},${binary:Package},${Version},${source:Package},${Source:Version}\n' -W) > $CRAFT_PRIME/usr/share/rocks/dpkg.query
