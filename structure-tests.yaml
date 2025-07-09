@@ -1,0 +1,28 @@
+schemaVersion: 2.0.0
+
+globalEnvVars:
+  - key: "OAUTH2_PROXY_COOKIE_SECRET"
+    value: "WrfOcYmVBwyduEbKYTUhO4X7XVaOQ1wF"
+  - key: "OAUTH2_PROXY_HTTP_ADDRESS"
+    value: "0.0.0.0:4180"
+  - key: "OAUTH2_PROXY_CLIENT_ID"
+    value: "default"
+  - key: "OAUTH2_PROXY_CLIENT_SECRET"
+    value: "default"
+  - key: "OAUTH2_PROXY_EMAIL_DOMAINS"
+    value: "*"
+
+fileExistenceTests:
+- name: "no go binary"
+  path: "/usr/bin/go"
+  shouldExist: false
+- name: "application go binary"
+  path: "/bin/oauth2-proxy"
+  shouldExist: true
+- name: "application config file"
+  path: "/etc/config/oauth2-proxy/oauth2-proxy.cfg"
+  shouldExist: true
+commandTests:
+- name: "application version"
+  command: "/bin/oauth2-proxy"
+  args: ["--version"]
