@@ -24,13 +24,11 @@ parts:
     source-type: local
     organize:
       oauth2-proxy.cfg: etc/config/oauth2-proxy/
-    stage:
-      - etc/config/oauth2-proxy/oauth2-proxy.cfg
 
   certificates:
     plugin: nil
     stage-packages:
-      - ca-certificates
+      - ca-certificates_data
 
   oauth2-proxy:
     plugin: go
