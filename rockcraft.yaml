@@ -29,6 +29,7 @@ parts:
     plugin: nil
     stage-packages:
       - ca-certificates_data
+      - base-files_chisel
 
   oauth2-proxy:
     plugin: go
