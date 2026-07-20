@@ -21,6 +21,9 @@ jobs:
   gh-publish:
     if: ${{ github.ref == 'refs/heads/main' }}
     needs: build
+    permissions:
+      contents: read
+      packages: write
     uses: canonical/identity-team/.github/workflows/_rock-gh-publish-third-party.yaml@59d4d2782bcb8fc2deea2aa08442e4c8603f2689 # v1.11.2
     with:
       rock: ${{ needs.build.outputs.rock }}
@@ -36,6 +39,11 @@ jobs:
   scan:
     if: ${{ github.ref == 'refs/heads/main' }}
     needs: gh-publish
+    permissions:
+      contents: read
+      packages: read
+      security-events: write
+      actions: read
     uses: canonical/identity-team/.github/workflows/_rock-scan.yaml@59d4d2782bcb8fc2deea2aa08442e4c8603f2689 # v1.11.2
     with:
       image: ${{ needs.gh-publish.outputs.image }}
