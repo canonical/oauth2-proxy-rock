@@ -42,6 +42,9 @@ jobs:
   oci-update-pr:
     needs: [gh-publish, scan]
     if: ${{ github.ref == 'refs/heads/main' }}
+    permissions:
+      contents: write
+      pull-requests: write
     uses: canonical/identity-team/.github/workflows/oci-update-pr.yaml@59d4d2782bcb8fc2deea2aa08442e4c8603f2689 # v1.11.2
     with:
         oci-image: ${{ needs.gh-publish.outputs.image }}
