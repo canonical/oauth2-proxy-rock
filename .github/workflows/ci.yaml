@@ -15,7 +15,7 @@ on:
 
 jobs:
   build:
-    uses: canonical/identity-team/.github/workflows/_rock-build.yaml@59d4d2782bcb8fc2deea2aa08442e4c8603f2689 # v1.11.2
+    uses: canonical/identity-team/.github/workflows/_rock-build.yaml@5830f3e6723de07cb5b7ccb6c84031d8b2964c62 # v1.11.4
     with:
       structure-tests-enabled: true
   gh-publish:
@@ -24,13 +24,13 @@ jobs:
     permissions:
       contents: read
       packages: write
-    uses: canonical/identity-team/.github/workflows/_rock-gh-publish-third-party.yaml@59d4d2782bcb8fc2deea2aa08442e4c8603f2689 # v1.11.2
+    uses: canonical/identity-team/.github/workflows/_rock-gh-publish-third-party.yaml@5830f3e6723de07cb5b7ccb6c84031d8b2964c62 # v1.11.4
     with:
       rock: ${{ needs.build.outputs.rock }}
   oci-publish:
     if: ${{ github.ref == 'refs/heads/main' }}
     needs: build
-    uses: canonical/identity-team/.github/workflows/_rock-oci-publish.yaml@59d4d2782bcb8fc2deea2aa08442e4c8603f2689 # v1.11.2
+    uses: canonical/identity-team/.github/workflows/_rock-oci-publish.yaml@5830f3e6723de07cb5b7ccb6c84031d8b2964c62 # v1.11.4
     with:
       edge-release: false
       eol-stable-release: "3 month"
@@ -44,7 +44,7 @@ jobs:
       packages: read
       security-events: write
       actions: read
-    uses: canonical/identity-team/.github/workflows/_rock-scan.yaml@59d4d2782bcb8fc2deea2aa08442e4c8603f2689 # v1.11.2
+    uses: canonical/identity-team/.github/workflows/_rock-scan.yaml@5830f3e6723de07cb5b7ccb6c84031d8b2964c62 # v1.11.4
     with:
       image: ${{ needs.gh-publish.outputs.image }}
   oci-update-pr:
@@ -53,7 +53,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    uses: canonical/identity-team/.github/workflows/oci-update-pr.yaml@59d4d2782bcb8fc2deea2aa08442e4c8603f2689 # v1.11.2
+    uses: canonical/identity-team/.github/workflows/oci-update-pr.yaml@5830f3e6723de07cb5b7ccb6c84031d8b2964c62 # v1.11.4
     with:
         oci-image: ${{ needs.gh-publish.outputs.image }}
         repository: canonical/oauth2-proxy-k8s-operator
