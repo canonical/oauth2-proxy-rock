@@ -1,0 +1,21 @@
+# Configuration for canonical/identity-team upstream-upgrade workflows.
+# Upstream repository, tag prefix, and rock image are auto-detected from rockcraft.yaml.
+
+trusted_link_hosts:
+  - oauth2-proxy.github.io
+
+charms:
+  - key: oauth2-proxy
+    repo: canonical/oauth2-proxy-k8s-operator
+    description: >-
+      Deploys OAuth2 Proxy reverse proxy and static file server behind
+      ingress with OIDC/OAuth2 provider and forward-auth integrations.
+    files:
+      - charmcraft.yaml
+      - src/charm.py
+      - src/cli.py
+      - src/configs.py
+      - src/constants.py
+      - src/env_vars.py
+      - src/integrations.py
+      - src/services.py
